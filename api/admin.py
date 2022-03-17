@@ -1,13 +1,13 @@
 
 # Register your models here.
 from django.contrib import admin
-from .models import Movie
+from .models import Meeting
 
-class MovieList(admin.ModelAdmin):
-    list_display = ('name', 'year', 'description', 'rating')
-    list_filter = ('name', 'year', 'rating')
+class MeetingList(admin.ModelAdmin):
+    list_display = ('name', 'date', 'description')
+    list_filter = ('name', 'date')
     search_fields = ('name', 'description')
-    ordering = ['year']
+    ordering = ['name']
 
 
-admin.site.register(Movie, MovieList)
+admin.site.register(Meeting, MeetingList)

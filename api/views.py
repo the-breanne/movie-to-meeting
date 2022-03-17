@@ -8,15 +8,15 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
-def movie_list(request):
+def meeting_list(request):
     permission_classes = (IsAuthenticatedOrReadOnly)
     if request.method == 'GET':
-        movies = Movie.objects.all()
-        serializer = MovieSerializer(movies, context={'request': request}, many=True)
+        meetings = Meeting.objects.all()
+        serializer = MeetingSerializer(meetings, context={'request': request}, many=True)
         return Response({'data': serializer.data})
 
     elif request.method == 'POST':
-        serializer = MovieSerializer(data=request.data)
+        serializer = MeetingSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -25,27 +25,27 @@ def movie_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def getMovie(request, pk):
+def getMeeting(request, pk):
     """
-    Retrieve, update or delete a movie instance.
+    Retrieve, update or delete a meeting instance.
     """
     try:
-     movie = Movie.objects.get(pk=pk)
-    except Movie.DoesNotExist:
+     meeting = Meeting.objects.get(pk=pk)
+    except Meeting.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = MovieSerializer(movie,context={'request': request})
+        serializer = MeetingSerializer(meeting,context={'request': request})
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = MovieSerializer(movie, data=request.data,context={'request': request})
+        serializer = MeetingSerializer(meeting, data=request.data,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        movie.delete()
+        meeting.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
